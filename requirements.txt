@@ -1,0 +1,6 @@
+GitPython
+pandas
+matplotlib
+seaborn
+ollama
+pygments
