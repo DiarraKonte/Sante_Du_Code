@@ -12,7 +12,7 @@ st.set_page_config(page_title="Repo Architect AI", layout="wide")
 st.title("Repo Architect - Analyse d'Architecture IA")
 st.markdown("---")
 
-# --- INITIALISATION DU STATE (Mémoire de l'application) ---
+# INITIALISATION DU STATE (memoire de l'application) 
 if 'df' not in st.session_state:
     st.session_state.df = None
 if 'summary' not in st.session_state:
@@ -22,25 +22,25 @@ if 'top_5' not in st.session_state:
 if 'target_path' not in st.session_state:
     st.session_state.target_path = None
 
-# --- SIDEBAR (CONFIGURATION) ---
+# SIDEBAR (CONFIGURATION) 
 st.sidebar.header("Configuration")
 repo_input = st.sidebar.text_input("URL du Dépôt (SSH)", value=REPO_URL)
 target_path_input = st.sidebar.text_input("Dossier de destination", value=target_path_input if 'target_path' in locals() else TARGET_DIR)
 
 if st.sidebar.button("Lancer l'Analyse"):
     with st.spinner("Clonage et analyse en cours..."):
-        # Nettoyage et Clonage
+        # nettoyage et clonage
         if os.path.exists(target_path_input):
              shutil.rmtree(target_path_input)
         
         clone_repository(repo_input, target_path_input)
         
-        # Collecte des données
+        # collecte des donnees
         df = get_file_stats(target_path_input)
         
         if not df.empty:
             summary, top_5 = analyze_data(df)
-            # Sauvegarde dans le state pour éviter de tout perdre au prochain clic
+            # sauvegarde dans le state pour eviter de tout perdre au prochain clic
             st.session_state.df = df
             st.session_state.summary = summary
             st.session_state.top_5 = top_5
@@ -48,7 +48,7 @@ if st.sidebar.button("Lancer l'Analyse"):
         else:
             st.error("Aucun fichier de code trouvé dans ce dépôt.")
 
-# --- AFFICHAGE DES RÉSULTATS (SI DISPONIBLES DANS LE STATE) ---
+# AFFICHAGE DES RESULTATS (SI DISPONIBLES DANS LE STATE) 
 if st.session_state.df is not None:
     df = st.session_state.df
     summary = st.session_state.summary
@@ -70,9 +70,9 @@ if st.session_state.df is not None:
         plt.title("Lignes par langage")
         st.pyplot(fig)
 
-    # --- ANALYSE IA ---
+    # ANALYSE IA 
     st.markdown("---")
-    st.subheader("Rapport de l'Architecte IA (Ollama)")
+    st.subheader("Rapport de l'Architecte IA (Ollama mistral 8B)")
     
     audit_mode = st.radio("Mode d'analyse :", ["Fichier principal uniquement", "Audit Global (Projet complet)"], key="audit_mode_radio")
 
