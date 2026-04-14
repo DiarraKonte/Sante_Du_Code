@@ -5,12 +5,25 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
 import ollama
+from radon.complexity import cc_visit
 
 # --- CONFIGURATION ---
 REPO_URL = "git@github.com:DiarraKonte/Sante_Du_Code.git"
 TARGET_DIR = "./data/cloned_repo"
-IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'venv', 'dist', 'build'}
+IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'venv', 'dist', 'build', '.venv'}
 EXTENSIONS = {'.py', '.js', '.ts', '.tsx', '.jsx', '.css', '.html', '.go', '.java', '.md'}
+
+def get_complexity(content, extension):
+    """Calcule la complexité cyclomatique moyenne pour les fichiers supportés."""
+    if extension != '.py':
+        return 0 # Pour l'instant on se concentre sur Python pour la complexité brute
+    try:
+        results = cc_visit(content)
+        if not results:
+            return 0
+        return sum(r.complexity for r in results) / len(results)
+    except:
+        return 0
 
 def clone_repository(url, target):
     """Clone le repo s'il n'existe pas déjà sur ton PC."""
@@ -38,11 +51,15 @@ def get_file_stats(repo_path):
         if file_path.is_file() and file_path.suffix in EXTENSIONS:
             try:
                 with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
-                    lines = f.readlines()
+                    content = f.read()
+                    lines = content.splitlines()
+                    complexity = get_complexity(content, file_path.suffix)
+                    
                     stats.append({
                         'filename': file_path.name,
                         'extension': file_path.suffix,
                         'lines': len(lines),
+                        'complexity': round(complexity, 2),
                         'size_kb': os.path.getsize(file_path) / 1024,
                         'path': str(file_path.relative_to(repo_path))
                     })
@@ -55,7 +72,7 @@ def analyze_data(df):
     """Analyse les données avec Pandas."""
     print("\n--- ANALYSE DES DONNÉES ---")
     summary = df.groupby('extension')['lines'].sum().sort_values(ascending=False)
-    top_5 = df.nlargest(5, 'lines')[['filename', 'lines']]
+    top_5 = df.nlargest(5, 'lines')[['filename', 'lines', 'complexity']]
     return summary, top_5
 
 def visualize_data(summary):

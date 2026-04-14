@@ -1,7 +1,8 @@
-GitPython
+streamlit
 pandas
 matplotlib
 seaborn
+plotly
+gitpython
+radon
 ollama
-pygments
-streamlit
