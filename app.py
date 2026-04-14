@@ -16,6 +16,7 @@ st.markdown("""
 > Cet outil analyse la structure de vos projets, calcule la complexité technique et utilise une IA locale pour identifier la dette technique.
 """)
 st.markdown("---")
+st.markdown("*Projet réalisé dans le cadre d'un auto-apprentissage sur l'intégration des LLMs et l'analyse de données logicielle.*")
 
 # INITIALISATION DU STATE
 if 'df' not in st.session_state:

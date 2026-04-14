@@ -14,7 +14,7 @@ IGNORE_DIRS = {'.git', 'node_modules', '__pycache__', 'venv', 'dist', 'build', '
 EXTENSIONS = {'.py', '.js', '.ts', '.tsx', '.jsx', '.css', '.html', '.go', '.java', '.md'}
 
 def get_complexity(content, extension):
-    """Calcule la complexité cyclomatique moyenne pour les fichiers supportés."""
+    """calcule la complexite cyclomatique moyenne pour les fichiers supportes."""
     if extension != '.py':
         return 0 # Pour l'instant on se concentre sur Python pour la complexité brute
     try:
@@ -26,7 +26,7 @@ def get_complexity(content, extension):
         return 0
 
 def clone_repository(url, target):
-    """Clone le repo s'il n'existe pas déjà sur ton PC."""
+    """Clone le repo s'il n'existe pas deja sur PC."""
     if not os.path.exists(target):
         os.makedirs(os.path.dirname(target), exist_ok=True)
         print(f"--- Clonage de {url} en cours... ---")
@@ -37,7 +37,7 @@ def clone_repository(url, target):
             print(f"Erreur lors du clonage : {e}")
             raise e
     else:
-        print("--- Repo déjà présent localement. ---")
+        print("--- Repo deja present localement ---")
 
 def get_file_stats(repo_path):
     """Parcourt le repo et extrait les données."""
@@ -69,15 +69,15 @@ def get_file_stats(repo_path):
     return pd.DataFrame(stats)
 
 def analyze_data(df):
-    """Analyse les données avec Pandas."""
-    print("\n--- ANALYSE DES DONNÉES ---")
+    """analyse les donnees avec Pandas."""
+    print("\n--- ANALYSE DES DONNEES ---")
     summary = df.groupby('extension')['lines'].sum().sort_values(ascending=False)
     top_5 = df.nlargest(5, 'lines')[['filename', 'lines', 'complexity']]
     return summary, top_5
 
 def visualize_data(summary):
     """Génère un graphique de répartition."""
-    print("\n--- GÉNÉRATION DU GRAPHIQUE ---")
+    print("\n--- GENERATION DU GRAPHIQUE ---")
     plt.figure(figsize=(10, 6))
     sns.set_theme(style="whitegrid")
     ax = sns.barplot(x=summary.index, y=summary.values, palette="viridis")
