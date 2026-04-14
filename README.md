@@ -1,10 +1,8 @@
 # Repo Architect AI
 
-> **Repo Architect AI** est un outil simple pour faire un audit rapide de tes projets Git. Le script récupère tes fichiers, sort des stats avec **Pandas** et demande à une **IA locale de ton choix(Ollama)** de te donner des conseils d'architecture.
+> **Repo Architect AI** est un outil simple pour faire un audit rapide de tes projets Git. Le script récupère tes fichiers, sort des stats avec **Pandas** et demande à une **IA locale (Ollama)** de te donner des conseils d'architecture.
 
-<div align="center">
-  <video src="assets/demo.mp4" width="100%" controls autoplay loop muted></video>
-</div>
+https://github.com/DiarraKonte/Sante_Du_Code/raw/main/assets/demo.mp4
 
 ---
 
